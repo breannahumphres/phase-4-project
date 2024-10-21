@@ -17,18 +17,6 @@ def is_admin(request):
     return password == ADMIN_PASSWORD
 # Views go here!
 
-@app.route("/admin/users/<int:id>", methods = ["DELETE"])
-def delete_user(id):
-    if not is_admin(request):
-        return {"error": "Unauthorized"}, 403
-    
-    user = User.query.get(id)
-    if not user: 
-        return {"error": "user not found"}, 404
-    
-    db.session.delete(user)
-    db.session.commit()
-    return {"message": f"User with ID {id} deleted successfully"}, 200
 
 @app.route("/admin/tournaments/<int:id>", methods = ["DELETE"])
 def delete_tournaments(id):
@@ -103,6 +91,35 @@ class Users(Resource):
         except IntegrityError:
             db.session.rollback()
             return make_response(jsonify({"error": "database integrity error"}), 400)
+class UsersByID(Resource):
+    def get(self, id):
+        user = User.query.get(id)
+        if not user: 
+            return {"error": "User not found"}, 404
+        return user.to_dict(), 200
+    
+    def patch(self,id):
+        user = User.query.get(id)
+        if not user: 
+            return {"error": "user not found"}, 404
+        data = request.get_json()
+        if "username" in data:
+            user.username = data["username"]
+        if "email" in data:
+            user.email = data["email"]
+        db.session.commit()
+        return user.to_dict(), 200
+    def delete(self, id):
+        if not is_admin(request):
+            return {"error": "Unauthorized"}, 403
+    
+        user = User.query.get(id)
+        if not user: 
+            return {"error": "user not found"}, 404
+    
+        db.session.delete(user)
+        db.session.commit()
+        return {"message": f"User with ID {id} deleted successfully"}, 200
 
 class Tournaments(Resource):
     def get(self):
@@ -132,6 +149,21 @@ class TournamentsByID(Resource):
         if not tournament:
             return make_response({"error": "tournament not found"}, 404)
         return make_response(jsonify(tournament.to_dict(include_registrations=True)),200)
+
+    def patch(self,id):
+        tournament = Tournament.query.get(id)
+        if not tournament: 
+            return {"error": "Tournament not found"}, 404
+        data = request.get_json()
+        if "title" in data:
+            tournament.title = data["title"]
+        if "game" in data:
+            tournament.game = data["game"]
+        if "location" in data:
+            tournament.location = data["location"]
+
+        db.session.commit()
+        return tournament.to_dict(), 200
 
 class Registrations(Resource):
     def get(self):
@@ -174,8 +206,19 @@ class RegistrationsByID(Resource):
         if not registration:
             return make_response({"error": "registration not found"}, 404)
         return make_response(jsonify(registration.to_dict(include_tournaments=True)),200)
+    def patch(self,id):
+        registration = Registration.query.get(id)
+        if not registration: 
+            return {"error": "registration not found"}, 404
+        data = request.get_json()
+        if "team_name" in data:
+            registration.team_name = data["team_name"]
+        db.session.commit()
+        return registration.to_dict(), 200
+
 
 api.add_resource(Users, "/users")
+api.add_resource(UsersByID,"/users/<int:id>")
 api.add_resource(Tournaments, "/tournaments")
 api.add_resource(TournamentsByID, "/tournaments/<int:id>")
 api.add_resource(Registrations, "/registrations")
