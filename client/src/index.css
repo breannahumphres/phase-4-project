@@ -1,3 +1,9 @@
+/* Import Tailwind's base, components, and utilities */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS variables */
 :root {
   --bg: #282c34;
   --header: #fff;
@@ -5,3 +11,8 @@
   --text: hsla(0, 0%, 100%, 0.88);
 }
 
+/* You can now use your custom variables */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
