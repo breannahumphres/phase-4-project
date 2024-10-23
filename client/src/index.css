@@ -5,14 +5,117 @@
 
 /* Custom CSS variables */
 :root {
-  --bg: #282c34;
-  --header: #fff;
-  --link: #61dafb;
-  --text: hsla(0, 0%, 100%, 0.88);
+  --bg: #1f1f1f; /* Dark background for the body */
+  --card-bg: #2e2e2e; /* Dark background for cards */
+  --highlight-color: #3ae374; /* Bright color for highlights */
+  --hover-color: #32d96b; /* Slightly lighter hover color */
+  --text: #c5c5c5; /* Light gray text for body */
+  --white-text: #ffffff;
+  --shadow-dark: rgba(0, 0, 0, 0.6);
 }
 
 /* You can now use your custom variables */
 body {
   background-color: var(--bg);
   color: var(--text);
+}
+
+/* Card styling */
+.tournament-card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0px 4px 15px var(--shadow-dark);
+  transition: transform 0.3s, box-shadow 0.3s;
+  margin-bottom: 20px;
+}
+
+.tournament-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 6px 20px var(--shadow-dark);
+}
+
+/* Text styling */
+.tournament-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--white-text);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.tournament-details {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.tournament-button {
+  background-color: var(--highlight-color);
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tournament-button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Sidebar styling */
+.sidebar {
+  background-color: var(--card-bg);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.sidebar h2 {
+  color: var(--highlight-color);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.sidebar a {
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+  padding: 10px 0;
+}
+
+.sidebar a:hover {
+  color: var(--white-text);
+}
+
+/* Header styling */
+.header {
+  background-color: var(--bg);
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header h1 {
+  color: var(--white-text);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.header .navigation {
+  display: flex;
+  gap: 20px;
+}
+
+.header .navigation a {
+  color: var(--highlight-color);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.header .navigation a:hover {
+  color: var(--hover-color);
 }
