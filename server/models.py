@@ -26,7 +26,7 @@ class User(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<User {self.id}, {self.username}, {self.email}>'
-    
+
 class Tournament(db.Model, SerializerMixin):
     __tablename__ = "tournaments"
 
@@ -43,7 +43,7 @@ class Tournament(db.Model, SerializerMixin):
         if self.date:
             return self.date.strftime('%Y-%m-%d %H:%M:%S')
         return "Date not set"
-    
+
     def to_dict(self, include_registrations=False):
         data = {
             "id": self.id,
@@ -67,7 +67,7 @@ class Registration(db.Model, SerializerMixin):
     user_id= db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournaments.id'), nullable=False)
     team_name = db.Column(db.String, nullable=False, default = "Unnamed Team")
-    
+
     user = db.relationship("User", back_populates = "registrations")
     tournament = db.relationship("Tournament", back_populates = "registrations")
 
